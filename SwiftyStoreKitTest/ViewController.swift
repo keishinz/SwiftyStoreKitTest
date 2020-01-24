@@ -19,12 +19,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var autoRenewableSubs2: UIButton!
     @IBOutlet weak var nonRenewingSubs1: UIButton!
     
+    private var purchaseButtons: Array<UIButton>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        let purchaseButtons: [UIButton] = [
+        purchaseButtons = [
             consumableProduct1,
             nonConsumableProduct1,
             nonConsumableProduct2,
@@ -48,7 +49,7 @@ class ViewController: UIViewController {
                 
                 for product in retrievedProducts {
                     if let i = IAPProductManager.iapProductIDsArray.firstIndex(of: product.productIdentifier) {
-                        purchaseButtons[i].setTitle("\(product.localizedDescription) - \(product.localizedPrice!)", for: .normal)
+                        self.purchaseButtons[i].setTitle("\(product.localizedDescription) - \(product.localizedPrice!)", for: .normal)
                     }
                     
                     if product.productIdentifier.contains("Subs") {
@@ -76,16 +77,43 @@ class ViewController: UIViewController {
     }
 
     @IBAction func consumableProduct1(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
     }
     @IBAction func nonConsumableProduct1(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
     }
     @IBAction func nonConsumableProduct2(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
     }
     @IBAction func autoRenewableSubs1(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
     }
     @IBAction func autoRenewableSubs2(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
     }
     @IBAction func nonRenewingSubs1(_ sender: UIButton) {
+        purchaseButtonTapped(at: sender)
+    }
+    @IBAction func restorePurchases(_ sender: UIButton) {
+        SwiftyStoreKit.restorePurchases(atomically: true) { results in
+            if results.restoreFailedPurchases.count > 0 {
+                print("Restore Failed: \(results.restoreFailedPurchases)")
+            }
+            else if results.restoredPurchases.count > 0 {
+                print("Restore Success: \(results.restoredPurchases)")
+            }
+            else {
+                print("Nothing to Restore")
+            }
+        }
+    }
+    
+    func purchaseButtonTapped(at sender: UIButton) {
+        if let i = purchaseButtons.firstIndex(of: sender) {
+            print(i)
+            let productionIdentifier = IAPProductManager.iapProductIDsArray[i]
+            purchaseProduct(with: productionIdentifier)
+        }
     }
     
     
@@ -149,6 +177,66 @@ class ViewController: UIViewController {
 
             case .error(let error):
                 print("Receipt verification failed: \(error)")
+            }
+        }
+    }
+    
+    func purchaseProduct(with productIdentifier: String) {
+        
+        if !productIdentifier.contains("Subs") {
+            SwiftyStoreKit.retrieveProductsInfo([productIdentifier]) { result in
+            
+                if let product = result.retrievedProducts.first {
+                    SwiftyStoreKit.purchaseProduct(product, quantity: 1, atomically: true) { result in
+                        switch result {
+                        case .success(let purchase):
+                            print("Purchase Success: \(purchase.productId)")
+                        case .error(let error):
+                            switch error.code {
+                            case .unknown:
+                                print("Unknown error. Please contact support")
+                            case .clientInvalid:
+                                print("Not allowed to make the payment")
+                            case .paymentCancelled:
+                                break
+                            case .paymentInvalid:
+                                print("The purchase identifier was invalid")
+                            case .paymentNotAllowed:
+                                print("The device is not allowed to make the payment")
+                            case .storeProductNotAvailable:
+                                print("The product is not available in the current storefront")
+                            case .cloudServicePermissionDenied:
+                                print("Access to cloud service information is not allowed")
+                            case .cloudServiceNetworkConnectionFailed:
+                                print("Could not connect to the network")
+                            case .cloudServiceRevoked:
+                                print("User has revoked permission to use this cloud service")
+                            default: print((error as NSError).localizedDescription)
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            SwiftyStoreKit.purchaseProduct(productIdentifier, atomically: true) { result in
+                
+                switch result {
+                case .success(let purchase):
+                    print("subscription successed.")
+                    // Deliver content from server, then:
+                    if purchase.needsFinishTransaction {
+                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+                        print("finished transaction.")
+                    }
+                    
+                    if productIdentifier.contains("auto") {
+                        self.verifyPurchase(with: productIdentifier, purchaesType: .autoRenewableSubscription)
+                    } else {
+                        self.verifyPurchase(with: productIdentifier, purchaesType: .nonRenewingSubscriprion, validDuration: TimeInterval(3600 * 24 * 30))
+                    }
+                case .error(let error):
+                    print(error.localizedDescription)
+                }
             }
         }
     }
