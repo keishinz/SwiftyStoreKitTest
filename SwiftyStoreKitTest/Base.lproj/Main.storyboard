@@ -64,8 +64,13 @@
                             <constraint firstItem="tO6-ry-XRm" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="71" id="H4g-Dq-r0s"/>
                             <constraint firstItem="2l9-BM-NCB" firstAttribute="leading" secondItem="i1W-VH-HUB" secondAttribute="leading" id="Icg-NH-gs8"/>
                             <constraint firstItem="ktf-S1-jCA" firstAttribute="top" secondItem="tO6-ry-XRm" secondAttribute="bottom" constant="40" id="IhX-U4-QHv"/>
+                            <constraint firstItem="Bdb-Z7-lbl" firstAttribute="centerX" secondItem="tO6-ry-XRm" secondAttribute="centerX" id="Jf1-m3-FYh"/>
+                            <constraint firstItem="ktf-S1-jCA" firstAttribute="centerX" secondItem="tO6-ry-XRm" secondAttribute="centerX" id="MXr-5q-i9k"/>
+                            <constraint firstItem="iou-jy-wqm" firstAttribute="centerX" secondItem="tO6-ry-XRm" secondAttribute="centerX" id="O33-rQ-cpg"/>
                             <constraint firstItem="tO6-ry-XRm" firstAttribute="leading" secondItem="ktf-S1-jCA" secondAttribute="leading" id="OtK-eH-EqG"/>
                             <constraint firstItem="tO6-ry-XRm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Qbn-wx-UI9"/>
+                            <constraint firstItem="i1W-VH-HUB" firstAttribute="centerX" secondItem="tO6-ry-XRm" secondAttribute="centerX" id="TUF-rv-iOM"/>
+                            <constraint firstItem="2l9-BM-NCB" firstAttribute="centerX" secondItem="tO6-ry-XRm" secondAttribute="centerX" id="XLF-ob-5Bt"/>
                             <constraint firstItem="i1W-VH-HUB" firstAttribute="top" secondItem="2l9-BM-NCB" secondAttribute="bottom" constant="40" id="Xvn-P5-G25"/>
                             <constraint firstItem="ktf-S1-jCA" firstAttribute="leading" secondItem="2l9-BM-NCB" secondAttribute="leading" id="biM-F7-iA0"/>
                             <constraint firstItem="Bdb-Z7-lbl" firstAttribute="leading" secondItem="iou-jy-wqm" secondAttribute="leading" id="kXS-h4-OAD"/>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 import SwiftyStoreKit
 
 class ViewController: UIViewController {
@@ -23,12 +24,34 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        let purchaseButtons: [UIButton] = [
+            consumableProduct1,
+            nonConsumableProduct1,
+            nonConsumableProduct2,
+            autoRenewableSubs1,
+            autoRenewableSubs2,
+            nonRenewingSubs1
+        ]
+        
+        var productIdentifiers = [String]()
+        var retrievedProducts = [SKProduct]()
+        
         SwiftyStoreKit.retrieveProductsInfo(IAPProductManager.iapProductIDs) { result in
             
             if result.error == nil {
                 for product in result.retrievedProducts {
                     print("Product: \(product.localizedTitle),description: \(product.localizedDescription), price: \(product.localizedPrice!)")
+                    print(product.productIdentifier)
+                    productIdentifiers.append(product.productIdentifier)
+                    retrievedProducts.append(product)
                 }
+                
+                for product in retrievedProducts {
+                    if let i = IAPProductManager.iapProductIDsArray.firstIndex(of: product.productIdentifier) {
+                        purchaseButtons[i].setTitle("\(product.localizedDescription) - \(product.localizedPrice!)", for: .normal)
+                    }
+                }
+                
                 if !result.invalidProductIDs.isEmpty {
                     for invalidProductID in result.invalidProductIDs {
                         print("Invalid product identifier: \(invalidProductID)")
