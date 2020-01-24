@@ -50,6 +50,17 @@ class ViewController: UIViewController {
                     if let i = IAPProductManager.iapProductIDsArray.firstIndex(of: product.productIdentifier) {
                         purchaseButtons[i].setTitle("\(product.localizedDescription) - \(product.localizedPrice!)", for: .normal)
                     }
+                    
+                    if product.productIdentifier.contains("Subs") {
+                        if product.productIdentifier.contains("auto") {
+                            self.verifyPurchase(with: product.productIdentifier, purchaesType: .autoRenewableSubscription)
+                        } else {
+                            self.verifyPurchase(with: product.productIdentifier, purchaesType: .nonRenewingSubscriprion, validDuration: TimeInterval(3600 * 24 * 30))
+                        }
+                    } else {
+                        self.verifyPurchase(with: product.productIdentifier, purchaesType: .nonSubscription)
+                    }
+                    
                 }
                 
                 if !result.invalidProductIDs.isEmpty {
@@ -75,6 +86,71 @@ class ViewController: UIViewController {
     @IBAction func autoRenewableSubs2(_ sender: UIButton) {
     }
     @IBAction func nonRenewingSubs1(_ sender: UIButton) {
+    }
+    
+    
+    func verifyPurchase(with productIdentifier: String, purchaesType: IAPProductManager.IAPPurchaseType, validDuration: TimeInterval? = nil) {
+        
+        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: IAPProductManager.appSpecificSharedSecret)
+        
+        SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
+            
+            switch result {
+                
+            case .success(let receipt):
+                // Verify purchases
+                switch purchaesType {
+                case .nonSubscription:
+                    // Verify the purchase of Consumable or NonConsumable
+                    let purchaseResult = SwiftyStoreKit.verifyPurchase(
+                        productId: productIdentifier,
+                        inReceipt: receipt)
+                    
+                    switch purchaseResult {
+                    case .purchased(let receiptItem):
+                        print("\(productIdentifier) is purchased: \(receiptItem)")
+                    case .notPurchased:
+                        print("The user has never purchased \(productIdentifier)")
+                    }
+                    
+                case .nonRenewingSubscriprion:
+                    // Verify the purchases of Non Renewing Subscription
+                    guard let validDuration = validDuration else { return }
+                    let purchaseResult = SwiftyStoreKit.verifySubscription(
+                        ofType: .nonRenewing(validDuration: validDuration),
+                        productId: productIdentifier,
+                        inReceipt: receipt)
+                    
+                    switch purchaseResult {
+                    case .purchased(let expiryDate, let items):
+                        print("\(productIdentifier) is valid until \(expiryDate)\n\(items)\n")
+                    case .expired(let expiryDate, let items):
+                        print("\(productIdentifier) is expired since \(expiryDate)\n\(items)\n")
+                    case .notPurchased:
+                        print("The user has never purchased \(productIdentifier)")
+                    }
+                    
+                case .autoRenewableSubscription:
+                    // Verify purchases of Auto Renewable Subscription
+                    let purchaseResult = SwiftyStoreKit.verifySubscription(
+                        ofType: .autoRenewable,
+                        productId: productIdentifier,
+                        inReceipt: receipt)
+                    
+                    switch purchaseResult {
+                    case .purchased(let expiryDate, let items):
+                        print("\(productIdentifier) is valid until \(expiryDate)\n\(items)\n")
+                    case .expired(let expiryDate, let items):
+                        print("\(productIdentifier) is expired since \(expiryDate)\n\(items)\n")
+                    case .notPurchased:
+                        print("The user has never purchased \(productIdentifier)")
+                    }
+                }
+
+            case .error(let error):
+                print("Receipt verification failed: \(error)")
+            }
+        }
     }
     
 }

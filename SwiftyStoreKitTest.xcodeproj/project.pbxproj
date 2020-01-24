@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		78D7993C4CFA7B5BA7A98FB2 /* Pods_SwiftyStoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B434C1251D4ABE9684A48242 /* Pods_SwiftyStoreKitTest.framework */; };
 		806D8D5723DA608200300478 /* IAPProductManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D8D5623DA608200300478 /* IAPProductManager.swift */; };
+		806D8D5923DA87C000300478 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806D8D5823DA87C000300478 /* Constant.swift */; };
 		80F2D62D23D9BCC70005244E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2D62C23D9BCC70005244E /* AppDelegate.swift */; };
 		80F2D62F23D9BCC70005244E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2D62E23D9BCC70005244E /* SceneDelegate.swift */; };
 		80F2D63123D9BCC70005244E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F2D63023D9BCC70005244E /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		585F65524B399BB72B0C229E /* Pods-SwiftyStoreKitTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftyStoreKitTest.debug.xcconfig"; path = "Target Support Files/Pods-SwiftyStoreKitTest/Pods-SwiftyStoreKitTest.debug.xcconfig"; sourceTree = "<group>"; };
 		806D8D5623DA608200300478 /* IAPProductManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPProductManager.swift; sourceTree = "<group>"; };
+		806D8D5823DA87C000300478 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		80F2D62923D9BCC70005244E /* SwiftyStoreKitTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyStoreKitTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80F2D62C23D9BCC70005244E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80F2D62E23D9BCC70005244E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				80F2D62C23D9BCC70005244E /* AppDelegate.swift */,
+				806D8D5823DA87C000300478 /* Constant.swift */,
 				806D8D5623DA608200300478 /* IAPProductManager.swift */,
 				80F2D62E23D9BCC70005244E /* SceneDelegate.swift */,
 				80F2D63023D9BCC70005244E /* ViewController.swift */,
@@ -215,6 +218,7 @@
 			files = (
 				806D8D5723DA608200300478 /* IAPProductManager.swift in Sources */,
 				80F2D63123D9BCC70005244E /* ViewController.swift in Sources */,
+				806D8D5923DA87C000300478 /* Constant.swift in Sources */,
 				80F2D62D23D9BCC70005244E /* AppDelegate.swift in Sources */,
 				80F2D62F23D9BCC70005244E /* SceneDelegate.swift in Sources */,
 			);

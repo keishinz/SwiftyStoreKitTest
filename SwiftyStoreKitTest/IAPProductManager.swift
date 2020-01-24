@@ -27,6 +27,13 @@ struct IAPProductManager {
         "com.SwiftProject.Keishin.SwiftyStoreKitTest.autoRenewableSubs2",
         "com.SwiftProject.Keishin.SwiftyStoreKitTest.nonRenewingSubs1"
     ]
+    
+    static let appSpecificSharedSecret = Constant.appSpecificSharedSecret
 
+    enum IAPPurchaseType {
+        case nonSubscription
+        case autoRenewableSubscription
+        case nonRenewingSubscriprion
+    }
     
 }
